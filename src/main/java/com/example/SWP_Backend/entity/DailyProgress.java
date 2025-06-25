@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,9 +39,11 @@ public class DailyProgress {
     private Integer cravingsLevel;
 
     @Column(name = "Mood")
+    @Nationalized
     private String mood;
 
     @Column(name = "HealthNotes")
+    @Nationalized
     private String healthNotes;
 
     @Column(name = "MoneySavedToday")

@@ -1,11 +1,10 @@
 package com.example.SWP_Backend.entity;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,13 +17,18 @@ import java.time.LocalDate;
 public class CessationPlan {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long planID;
+    @Nationalized
     private String reasonToQuit;
+    @Nationalized
     private LocalDate startDate;
     private LocalDate targetQuitDate;
     private Integer cigarettesPerDay;
+    @Nationalized
     private String smokingFrequency;
     private BigDecimal costPerPack;
+    @Nationalized
     private String notes;
+    @Nationalized
     private String customDetails;
     private boolean isActive;
 

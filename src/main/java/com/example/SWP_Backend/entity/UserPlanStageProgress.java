@@ -1,7 +1,8 @@
 package com.example.SWP_Backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Entity
 @Data

@@ -1,7 +1,13 @@
 package com.example.SWP_Backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,25 +22,49 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentID;
 
+    // Thông tin người dùng mua gói
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
     private User user;
 
+    // Thông tin gói thành viên
     @ManyToOne
     @JoinColumn(name = "PackageID", nullable = false)
     private MembershipPackage packageInfo;
 
+    // Ngày giờ thanh toán
     private LocalDateTime paymentDate = LocalDateTime.now();
 
+    // Số tiền thanh toán
     private Double amount;
 
+    // Phương thức thanh toán (momo, vnpay,...)
+    @Nationalized
     private String paymentMethod;
 
+    // Mã giao dịch (unique, dùng xác minh)
     @Column(unique = true)
     private String transactionID;
 
+    // Trạng thái thanh toán ("pending", "active", "expired", "canceled", ...)
     @Column(nullable = false)
     private String status = "pending";
+
+    // ================= THÊM 3 TRƯỜNG MỚI =================
+
+    // Ngày bắt đầu hiệu lực gói
+    @Column
+    private LocalDate startDate;
+
+    // Ngày kết thúc hiệu lực gói
+    @Column
+    private LocalDate endDate;
+
+    // Ngày gia hạn tiếp theo (nếu có)
+    @Column
+    private LocalDate renewalDate;
+
+    // ================= GETTER/SETTER ĐẦY ĐỦ =================
 
     public Long getPaymentID() {
         return paymentID;
@@ -98,5 +128,30 @@ public class Payment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    // --- Các trường mới ---
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getRenewalDate() {
+        return renewalDate;
+    }
+
+    public void setRenewalDate(LocalDate renewalDate) {
+        this.renewalDate = renewalDate;
     }
 }

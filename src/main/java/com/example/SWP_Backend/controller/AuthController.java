@@ -1,11 +1,10 @@
 package com.example.SWP_Backend.controller;
 
 import com.example.SWP_Backend.entity.User;
-import com.example.SWP_Backend.repository.UserRepository;
 import com.example.SWP_Backend.repository.TokenRepository;
+import com.example.SWP_Backend.repository.UserRepository;
 import com.example.SWP_Backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,11 +1,11 @@
 package com.example.SWP_Backend.service;
 
-import com.example.SWP_Backend.DTO.ConsultationRequest;
-import com.example.SWP_Backend.entity.Consultation;
+import com.example.SWP_Backend.dto.ConsultationRequest;
 import com.example.SWP_Backend.entity.Coach;
+import com.example.SWP_Backend.entity.Consultation;
 import com.example.SWP_Backend.entity.User;
-import com.example.SWP_Backend.repository.ConsultationRepository;
 import com.example.SWP_Backend.repository.CoachRepository;
+import com.example.SWP_Backend.repository.ConsultationRepository;
 import com.example.SWP_Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

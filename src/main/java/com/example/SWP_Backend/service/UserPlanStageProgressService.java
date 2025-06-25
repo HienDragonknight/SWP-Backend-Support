@@ -4,8 +4,6 @@ import com.example.SWP_Backend.entity.UserPlanStageProgress;
 import com.example.SWP_Backend.repository.UserPlanStageProgressRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserPlanStageProgressService {
 

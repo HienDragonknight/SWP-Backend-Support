@@ -1,6 +1,4 @@
-package com.example.SWP_Backend.DTO;
-
-import lombok.*;
+package com.example.SWP_Backend.dto;
 
 
 public class PurchaseRequest {

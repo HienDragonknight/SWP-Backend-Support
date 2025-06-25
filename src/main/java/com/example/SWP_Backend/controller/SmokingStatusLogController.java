@@ -1,10 +1,9 @@
 package com.example.SWP_Backend.controller;
 
 
-import com.example.SWP_Backend.DTO.SmokingStatusLogRequest;
+import com.example.SWP_Backend.dto.SmokingStatusLogRequest;
 import com.example.SWP_Backend.entity.SmokingStatusLog;
 import com.example.SWP_Backend.service.SmokingStatusLogService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

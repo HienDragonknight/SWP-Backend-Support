@@ -40,7 +40,7 @@ public class UserPlanStageProgressController {
             @RequestParam String mucDoKeHoach,
             @RequestParam int soNgay) throws IOException {
         // Load total stages
-        int totalStages = planStageService.loadStagesForUser(
+        int totalStages = planStageService.loadDaysForUser(
                 "src/main/resources/ke_hoach_cai_thuoc_chi_tiet.xlsx",
                 mucDoKeHoach,
                 soNgay

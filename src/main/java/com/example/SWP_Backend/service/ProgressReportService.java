@@ -1,6 +1,6 @@
 package com.example.SWP_Backend.service;
 
-import com.example.SWP_Backend.DTO.ProgressReportDTO;
+import com.example.SWP_Backend.dto.ProgressReportDTO;
 import com.example.SWP_Backend.entity.CessationPlan;
 import com.example.SWP_Backend.entity.HabitLog;
 import com.example.SWP_Backend.repository.CessationPlanRepository;

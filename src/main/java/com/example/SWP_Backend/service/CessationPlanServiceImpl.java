@@ -1,12 +1,11 @@
 package com.example.SWP_Backend.service;
 
-import com.example.SWP_Backend.DTO.CessationPlanRequest;
-import com.example.SWP_Backend.DTO.CessationPlanUpdateRequest;
+import com.example.SWP_Backend.dto.CessationPlanRequest;
+import com.example.SWP_Backend.dto.CessationPlanUpdateRequest;
 import com.example.SWP_Backend.entity.CessationPlan;
 import com.example.SWP_Backend.entity.User;
 import com.example.SWP_Backend.repository.CessationPlanRepository;
 import com.example.SWP_Backend.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

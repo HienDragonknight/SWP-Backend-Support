@@ -33,4 +33,11 @@ public class CoachService {
     public void deleteCoach(Long id) {
         coachRepository.deleteById(id);
     }
+
+    public Coach getCoachByUserId(Long userId) {
+        return coachRepository.findByUserUserId(userId);
+    }
+
+
+
 }

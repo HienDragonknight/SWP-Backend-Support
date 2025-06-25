@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Nationalized;
 
 @Entity
 @Data
@@ -22,12 +23,19 @@ public class CessationPlanDetail {
     @Column(nullable = false)
     private Integer day; // Số ngày trong plan
 
+    @Nationalized
     private String goal;
+    @Nationalized
     private String activity1;
+    @Nationalized
     private String activity2;
+    @Nationalized
     private String activity3;
+    @Nationalized
     private String activity4;
+    @Nationalized
     private String activity5;
+
 
     public Long getId() {
         return id;

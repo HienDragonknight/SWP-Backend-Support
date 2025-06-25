@@ -1,7 +1,10 @@
 package com.example.SWP_Backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Nationalized;
 
 import java.time.LocalDate;
 
@@ -29,8 +32,10 @@ public class HabitLog {
 
     private Integer cravingsLevel;
 
+    @Nationalized
     private String mood;
 
+    @Nationalized
     private String notes;
 
     /**

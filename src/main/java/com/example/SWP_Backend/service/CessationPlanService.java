@@ -1,7 +1,7 @@
 package com.example.SWP_Backend.service;
 
-import com.example.SWP_Backend.DTO.CessationPlanRequest;
-import com.example.SWP_Backend.DTO.CessationPlanUpdateRequest;
+import com.example.SWP_Backend.dto.CessationPlanRequest;
+import com.example.SWP_Backend.dto.CessationPlanUpdateRequest;
 import com.example.SWP_Backend.entity.CessationPlan;
 
 import java.util.List;

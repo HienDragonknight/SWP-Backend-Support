@@ -1,8 +1,8 @@
 package com.example.SWP_Backend.controller;
 
 
-import com.example.SWP_Backend.DTO.ChangePasswordRequest;
-import com.example.SWP_Backend.DTO.UpdateProfileRequest;
+import com.example.SWP_Backend.dto.ChangePasswordRequest;
+import com.example.SWP_Backend.dto.UpdateProfileRequest;
 import com.example.SWP_Backend.entity.User;
 import com.example.SWP_Backend.repository.UserRepository;
 import com.example.SWP_Backend.service.UserService;
@@ -30,7 +30,7 @@ public class UserController {
     // ============= CRUD CƠ BẢN =============
 
     /**
-     * Lấy danh sách toàn bộ user
+     * Lấy danh sách toàn bộ user.
      * GET: /api/user
      */
     @GetMapping("/api/user")
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     /**
-     * Lấy thông tin user theo ID
+     * Lấy thông tin user theo ID.
      * GET: /api/user/{id}
      */
     @GetMapping("/api/user/{id}")
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     /**
-     * Tạo user mới (chỉ admin). User thường nên dùng AuthAPI /register
+     * Tạo user mới (chỉ admin). User thường nên dùng AuthAPI /register.
      * POST: /api/user
      */
     @PostMapping("/api/user")
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     /**
-     * Cập nhật thông tin user theo id
+     * Cập nhật thông tin user theo id.
      * PUT: /api/user/{id}
      */
     @PutMapping("/api/user/{id}")
@@ -76,7 +76,7 @@ public class UserController {
     }
 
     /**
-     * Xóa user theo id (chỉ admin)
+     * Xóa user theo id (chỉ admin).
      * DELETE: /api/user/{id}
      */
     @DeleteMapping("/api/user/{id}")
@@ -89,7 +89,7 @@ public class UserController {
     // ========== TRA CỨU ĐẶC BIỆT ===========
 
     /**
-     * Lấy user theo username
+     * Lấy user theo username.
      * GET: /api/user/username/{username}
      */
     @GetMapping("/api/user/username/{username}")
@@ -100,7 +100,7 @@ public class UserController {
     }
 
     /**
-     * Lấy user theo email
+     * Lấy user theo email.
      * GET: /api/user/email/{email}
      */
     @GetMapping("/api/user/email/{email}")
@@ -111,7 +111,7 @@ public class UserController {
     }
 
     /**
-     * Lấy danh sách user theo role (member, coach, admin...)
+     * Lấy danh sách user theo role (member, coach, admin...).
      * GET: /api/user/role/{role}
      */
     @GetMapping("/api/user/role/{role}")
@@ -121,7 +121,7 @@ public class UserController {
     }
 
     /**
-     * Lấy tất cả user có coachId != null (user đã được gán coach)
+     * Lấy tất cả user đã được gán coach.
      * GET: /api/user/with-coach
      */
     @GetMapping("/api/user/with-coach")
@@ -131,7 +131,7 @@ public class UserController {
     }
 
     /**
-     * Lấy user theo coachId (tất cả user do coach quản lý)
+     * Lấy user theo coachId (tất cả user do coach quản lý).
      * GET: /api/user/coach/{coachId}
      */
     @GetMapping("/api/user/coach/{coachId}")
@@ -139,22 +139,45 @@ public class UserController {
         List<User> users = userService.getUsersByCoachId(coachId);
         return ResponseEntity.ok(users);
     }
+
+    /**
+     * API cho member tự cập nhật thông tin cá nhân hoặc đổi/chọn/bỏ coach.
+     * POST: /update-profile
+     * FE truyền coachId = null hoặc coachId = -1 để bỏ coach, hoặc truyền coachId mới để đổi coach.
+     */
     @PostMapping("/update-profile")
     public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest request) {
         boolean success = userService.updateUserProfile(
                 request.getUserId(),
                 request.getFullName(),
                 request.getProfilePictureUrl(),
-                request.getCoachId(),
-                request.getCurrentMembershipPackageId()
+                request.getCoachId(),                        // <-- Cho phép null/-1 để bỏ coach, coachId hợp lệ để đổi coach
+                request.getCurrentMembershipPackageId(),
+                request.getPhoneNumber(),
+                request.getHometown(),
+                request.getOccupation(),
+                request.getAge(),
+                request.getAddress(),
+                request.getGender()
         );
 
         if (success) {
-            return ResponseEntity.ok(Map.of("success", true, "message", "Cập nhật thông tin cá nhân thành công."));
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Cập nhật thông tin cá nhân thành công."
+            ));
         } else {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Không tìm thấy người dùng."));
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Không tìm thấy người dùng."
+            ));
         }
     }
+
+    /**
+     * API đổi mật khẩu cho user.
+     * POST: /change-password
+     */
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
         if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
@@ -164,7 +187,11 @@ public class UserController {
             ));
         }
 
-        boolean ok = userService.updatePassword(request.getUserId(), request.getCurrentPassword(), request.getNewPassword());
+        boolean ok = userService.updatePassword(
+                request.getUserId(),
+                request.getCurrentPassword(),
+                request.getNewPassword()
+        );
         if (ok) {
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -177,7 +204,5 @@ public class UserController {
             ));
         }
     }
-
-
     // Kết thúc các endpoint quản lý user cho admin
 }

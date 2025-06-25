@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,8 +24,10 @@ public class SmokingStatusLog {
 
     private LocalDate logDate;
     private Integer cigarettesPerDay;
+    @Nationalized
     private String smokingFrequency;
     private BigDecimal costPerPack;
+    @Nationalized
     private String notes;
 
 

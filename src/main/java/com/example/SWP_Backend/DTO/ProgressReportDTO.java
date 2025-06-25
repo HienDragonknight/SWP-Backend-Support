@@ -1,4 +1,4 @@
-package com.example.SWP_Backend.DTO;
+package com.example.SWP_Backend.dto;
 
 
 import java.math.BigDecimal;

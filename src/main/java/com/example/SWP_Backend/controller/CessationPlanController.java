@@ -1,13 +1,11 @@
 package com.example.SWP_Backend.controller;
 
-import com.example.SWP_Backend.DTO.CessationPlanRequest;
-import com.example.SWP_Backend.DTO.CessationPlanUpdateRequest;
+import com.example.SWP_Backend.dto.CessationPlanRequest;
+import com.example.SWP_Backend.dto.CessationPlanUpdateRequest;
 import com.example.SWP_Backend.entity.CessationPlan;
 import com.example.SWP_Backend.service.CessationPlanService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

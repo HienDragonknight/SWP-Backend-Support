@@ -1,13 +1,10 @@
 package com.example.SWP_Backend.entity;
-import jakarta.persistence.Entity;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import org.hibernate.annotations.Nationalized;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +19,9 @@ public class PlanStage {
     private CessationPlan plan;
 
     private String stageName;
+    @Nationalized
     private String description;
+    @Nationalized
     private Integer targetDurationDays;
     private Integer sequenceOrder;
 

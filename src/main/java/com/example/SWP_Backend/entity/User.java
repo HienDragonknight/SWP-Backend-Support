@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User {
 
+    // Khóa chính UserID (tự tăng)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")
@@ -25,146 +26,75 @@ public class User {
 
     @Column(name = "Username", nullable = false, unique = true, length = 255)
     @Nationalized
-    private String username;
+    private String username; // Tên đăng nhập
 
     @Column(name = "PasswordHash", nullable = false, length = 255)
-    private String passwordHash;
+    private String passwordHash; // Mật khẩu hash
 
     @Column(name = "Email", nullable = false, unique = true, length = 255)
-    private String email;
+    private String email; // Email
 
     @Column(name = "FullName", length = 255)
     @Nationalized
-    private String fullName;
+    private String fullName; // Họ tên (nếu cần)
 
     @Column(name = "RegistrationDate", nullable = false)
-    private LocalDateTime registrationDate;
+    private LocalDateTime registrationDate; // Ngày đăng ký
 
     @Column(name = "LastLoginDate")
-    private LocalDateTime lastLoginDate;
+    private LocalDateTime lastLoginDate; // Ngày đăng nhập gần nhất
 
     @Column(name = "ProfilePictureURL", length = 255)
-    private String profilePictureUrl;
+    private String profilePictureUrl; // Ảnh đại diện
 
     @Column(name = "CurrentMembershipPackageID")
-    private Integer currentMembershipPackageId;
+    private Integer currentMembershipPackageId; // Gói thành viên hiện tại (FK)
 
     @Column(name = "SubscriptionEndDate")
-    private LocalDate subscriptionEndDate;
+    private LocalDate subscriptionEndDate; // Ngày hết hạn gói
 
-    @Column(name = "CoachID")
-    private long coachId;
+    /**
+     * Quan hệ nhiều người dùng (member) -> 1 coach
+     * Nhiều user có thể cùng trỏ về 1 coach.
+     * (Nếu user chưa chọn coach thì trường này có thể null)
+     */
+    @ManyToOne
+    @JoinColumn(name = "CoachID")
+    private Coach coach;
 
     @Column(name = "Role", nullable = false, length = 255)
-    private String role = "member"; // Default value
+    private String role = "member"; // member | coach | admin | ...
 
     @Column(name = "Enabled", nullable = false)
-    private boolean enabled = false; // Thêm trường này để xác thực email
+    private boolean enabled = false; // Trạng thái tài khoản
 
-    public long getUserId() {
-        return userId;
-    }
+    // ========== Các trường bổ sung cho member (hoặc dùng cho coach nếu muốn) ==========
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+    @Column(name = "PhoneNumber", length = 20)
+    private String phoneNumber;
 
-    public String getUsername() {
-        return username;
-    }
+    @Column(name = "Hometown", length = 255)
+    @Nationalized
+    private String hometown;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @Column(name = "Occupation", length = 255)
+    @Nationalized
+    private String occupation;
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+    @Column(name = "Age")
+    private Integer age;
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+    @Column(name = "Address", length = 255)
+    @Nationalized
+    private String address;
 
-    public String getEmail() {
-        return email;
-    }
+    @Column(name = "Gender", length = 20)
+    @Nationalized
+    private String gender; // Có thể String (Nam/Nữ), hoặc Integer nếu dùng code
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public LocalDateTime getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    public void setLastLoginDate(LocalDateTime lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
-    }
-
-    public Integer getCurrentMembershipPackageId() {
-        return currentMembershipPackageId;
-    }
-
-    public void setCurrentMembershipPackageId(Integer currentMembershipPackageId) {
-        this.currentMembershipPackageId = currentMembershipPackageId;
-    }
-
-    public LocalDate getSubscriptionEndDate() {
-        return subscriptionEndDate;
-    }
-
-    public void setSubscriptionEndDate(LocalDate subscriptionEndDate) {
-        this.subscriptionEndDate = subscriptionEndDate;
-    }
-
-    public long getCoachId() {
-        return coachId;
-    }
-
-    public void setCoachId(long coachId) {
-        this.coachId = coachId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
+    /**
+     * Thiết lập mặc định khi tạo mới user
+     */
     @PrePersist
     protected void onCreate() {
         if (registrationDate == null) {

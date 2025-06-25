@@ -1,6 +1,7 @@
 package com.example.SWP_Backend.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.time.LocalDateTime;
 
@@ -17,12 +18,14 @@ public class Token {
     private String email;
 
     @Column(columnDefinition = "TEXT", nullable = false)
+    @Nationalized
     private String userInfo;
 
     @Column(nullable = false)
     private LocalDateTime expiryDate;
 
     @Column(nullable = false)
+    @Nationalized
     private String type;
 
     // Nếu không dùng Lombok, thêm getter/setter:

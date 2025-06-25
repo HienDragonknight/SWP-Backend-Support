@@ -1,8 +1,11 @@
 package com.example.SWP_Backend.controller;
 
-import com.example.SWP_Backend.DTO.ProgressReportDTO;
+import com.example.SWP_Backend.dto.ProgressReportDTO;
 import com.example.SWP_Backend.service.ProgressReportService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/progress")

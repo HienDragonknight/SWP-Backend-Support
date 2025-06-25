@@ -1,4 +1,4 @@
-package com.example.SWP_Backend.DTO;
+package com.example.SWP_Backend.dto;
 
 public class ChangePasswordRequest {
     private Long userId;

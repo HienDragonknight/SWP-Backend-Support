@@ -1,7 +1,9 @@
 package com.example.SWP_Backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import org.hibernate.annotations.Nationalized;
 
 @Entity
 @Data
@@ -17,9 +19,11 @@ public class UserBadge {
     private Integer userId;
 
     @Column(nullable = false)
+    @Nationalized
     private String badgeName;
 
     @Column(nullable = false)
+    @Nationalized
     private String description;
 
     public UserBadge(Long id, Integer userId, String badgeName, String description) {
