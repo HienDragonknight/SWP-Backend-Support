@@ -1,6 +1,8 @@
 package com.example.SWP_Backend.service;
 
+import com.example.SWP_Backend.dto.CoachStatisticsDTO;
 import com.example.SWP_Backend.dto.ConsultationRequest;
+import com.example.SWP_Backend.dto.MemberStatisticsDTO;
 import com.example.SWP_Backend.entity.Coach;
 import com.example.SWP_Backend.entity.Consultation;
 import com.example.SWP_Backend.entity.User;
@@ -10,8 +12,12 @@ import com.example.SWP_Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsultationService {
@@ -25,6 +31,19 @@ public class ConsultationService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<Consultation> getConsultationsByCoachAndMemberName(Long coachId, String memberName) {
+        // Tìm danh sách userId theo memberName
+        List<User> users = userRepository.findByFullNameContainingIgnoreCase(memberName);
+        List<Long> userIds = users.stream().map(User::getUserId).toList();
+
+        // Tìm consultation của coach này và thuộc userIds trên
+        return consultationRepository.findByCoachIdAndUserIdIn(coachId, userIds);
+    }
+    public List<Consultation> getConsultationsByMemberName(String memberName) {
+        List<User> users = userRepository.findByFullNameContainingIgnoreCase(memberName);
+        List<Long> userIds = users.stream().map(User::getUserId).toList();
+        return consultationRepository.findByUserIdIn(userIds); // bạn thêm phương thức này
+    }
     /**
      * Tạo yêu cầu tư vấn mới sau khi xác thực user và coach có tồn tại.
      */
@@ -90,5 +109,56 @@ public class ConsultationService {
             throw new RuntimeException("Coach not found with ID: " + coachId);
         }
         return consultationRepository.findByCoachId(coachId);
+    }
+
+    public List<MemberStatisticsDTO> getMembersByCoach(Long coachId) {
+        return consultationRepository.findMembersByCoach(coachId);
+    }
+
+
+    public CoachStatisticsDTO getCoachStatistics(Long coachId) {
+        List<Consultation> consultations = consultationRepository.findByCoachId(coachId);
+        if (consultations.isEmpty()) {
+            return new CoachStatisticsDTO(0, 0, 0, 0);
+        }
+
+        // Tổng số buổi tư vấn
+        int totalConsultations = consultations.size();
+
+        // Tổng số completed
+        long totalCompleted = consultations.stream()
+                .filter(c -> "approved".equalsIgnoreCase(c.getStatus()))
+                .count();
+
+        // Tổng số member (distinct userId)
+        Set<Long> memberIds = consultations.stream()
+                .map(Consultation::getUserId)
+                .collect(Collectors.toSet());
+
+        int totalMembers = memberIds.size();
+
+        double successRate = totalConsultations == 0 ? 0 : (double) totalCompleted / totalConsultations * 100;
+
+        // Tính thời gian trung bình giữa lần đầu và lần cuối của mỗi member
+        double averageDurationDays = memberIds.stream().mapToLong(memberId -> {
+            List<Consultation> memberConsults = consultations.stream()
+                    .filter(c -> c.getUserId().equals(memberId))
+                    .sorted(Comparator.comparing(Consultation::getScheduledTime))
+                    .toList();
+
+            if (memberConsults.size() <= 1) return 0L;
+
+            LocalDateTime first = memberConsults.get(0).getScheduledTime();
+            LocalDateTime last = memberConsults.get(memberConsults.size() - 1).getScheduledTime();
+
+            return Duration.between(first, last).toDays();
+        }).average().orElse(0);
+
+        return new CoachStatisticsDTO(
+                totalMembers,
+                (int) totalCompleted,
+                successRate,
+                averageDurationDays
+        );
     }
 }

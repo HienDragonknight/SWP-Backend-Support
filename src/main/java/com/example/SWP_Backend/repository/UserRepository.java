@@ -1,8 +1,10 @@
 package com.example.SWP_Backend.repository;
 
+import com.example.SWP_Backend.dto.MonthlyUserDTO;
 import com.example.SWP_Backend.entity.Coach;
 import com.example.SWP_Backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +33,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Linh hoạt đăng nhập (username hoặc email)
     User findByUsernameOrEmail(String username, String email);
+
+    // UserRepository
+    List<User> findByFullNameContainingIgnoreCase(String fullName);
+
+    @Query("""
+        SELECT new com.example.SWP_Backend.dto.MonthlyUserDTO(
+            YEAR(u.registrationDate), MONTH(u.registrationDate), COUNT(u)
+        )
+        FROM User u
+        GROUP BY YEAR(u.registrationDate), MONTH(u.registrationDate)
+        ORDER BY YEAR(u.registrationDate), MONTH(u.registrationDate)
+    """)
+    List<MonthlyUserDTO> getMonthlyUserCounts();
 }

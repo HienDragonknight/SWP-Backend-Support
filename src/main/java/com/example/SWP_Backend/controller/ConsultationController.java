@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +17,16 @@ public class ConsultationController {
 
     @Autowired
     private ConsultationService consultationService;
+
+    @GetMapping("/search-by-member")
+    public ResponseEntity<List<Consultation>> searchByMember(
+            @RequestParam Long coachId,
+            @RequestParam String memberName) {
+        return ResponseEntity.ok(
+                consultationService.getConsultationsByCoachAndMemberName(coachId, memberName)
+        );
+    }
+
 
     // B1: User tạo yêu cầu tư vấn
     @PostMapping("/request")

@@ -61,7 +61,7 @@ public class AuthController {
             tempUser.setEmail(request.getEmail());
             tempUser.setPasswordHash(request.getPassword());
             tempUser.setUsername(request.getEmail());
-            tempUser.setRole("member");
+            tempUser.setRole("guest");
 
             userService.registerUserWithOtp(tempUser);
 

@@ -1,13 +1,11 @@
 package com.example.SWP_Backend.controller;
 
-import com.example.SWP_Backend.dto.AdminCreateCoachRequest;
-import com.example.SWP_Backend.dto.CoachProfileResponse;
-import com.example.SWP_Backend.dto.CreateCoachRequest;
-import com.example.SWP_Backend.dto.UpdateCoachProfileRequest;
+import com.example.SWP_Backend.dto.*;
 import com.example.SWP_Backend.entity.Coach;
 import com.example.SWP_Backend.entity.User;
 import com.example.SWP_Backend.repository.UserRepository;
 import com.example.SWP_Backend.service.CoachService;
+import com.example.SWP_Backend.service.ConsultationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+// chuân solid
 @RestController
 @RequestMapping("/api/coaches")
 public class CoachController {
@@ -26,6 +24,21 @@ public class CoachController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private  ConsultationService consultationService;
+
+
+
+    @GetMapping("/{coachId}/members")
+    public List<MemberStatisticsDTO> getMembersByCoach(@PathVariable Long coachId) {
+        return consultationService.getMembersByCoach(coachId);
+    }
+
+    @GetMapping("/members/{memberId}")
+    public User getMemberDetail(@PathVariable Long memberId) {
+        return userRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+    }
     // ============= Helper mapping Entity Coach -> Response DTO =============
     private CoachProfileResponse mapToCoachProfileResponse(Coach coach) {
         CoachProfileResponse dto = new CoachProfileResponse();

@@ -52,6 +52,7 @@ public class PurchaseService {
         // ======= Cập nhật thông tin user ========
         user.setCurrentMembershipPackageId(Math.toIntExact(membershipPackage.getPackageID()));
         user.setSubscriptionEndDate(endDate);
+        user.setRole("member");
         userRepository.save(user);
 
         return paymentRepository.save(payment);
